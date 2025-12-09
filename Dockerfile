@@ -15,6 +15,7 @@ RUN --mount=type=cache,target=/go/pkg/mod \
 # Runtime stage
 FROM scratch
 
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /usr/local/bin/jolly-okurb /usr/local/bin/jolly-okurb
 
 USER 1000
