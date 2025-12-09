@@ -112,12 +112,13 @@ func (b *Bot) ShouldDeleteMessage(m *discordgo.MessageCreate) bool {
 	if m.Author == nil || m.Author.ID != b.config.TargetUserID {
 		return false
 	}
-	// Check if message is only the skull emoji (with optional whitespace)
-	content := strings.TrimSpace(m.Content)
-	if content != SkullEmoji {
+	// Check if message contains only skull emojis (with optional whitespace)
+	content := strings.ReplaceAll(m.Content, " ", "")
+	if content == "" {
 		return false
 	}
-	return true
+	content = strings.ReplaceAll(content, SkullEmoji, "")
+	return content == ""
 }
 
 func (b *Bot) ShouldProcessReaction(r *discordgo.MessageReactionAdd) bool {

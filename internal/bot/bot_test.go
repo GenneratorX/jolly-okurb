@@ -558,6 +558,28 @@ func TestBot_ShouldDeleteMessage(t *testing.T) {
 			expected: true,
 		},
 		{
+			name: "deletes multiple skulls",
+			message: &discordgo.MessageCreate{
+				Message: &discordgo.Message{
+					ChannelID: "chan123",
+					Content:   "💀💀💀",
+					Author:    &discordgo.User{ID: "user456"},
+				},
+			},
+			expected: true,
+		},
+		{
+			name: "deletes multiple skulls with spaces",
+			message: &discordgo.MessageCreate{
+				Message: &discordgo.Message{
+					ChannelID: "chan123",
+					Content:   "💀 💀 💀",
+					Author:    &discordgo.User{ID: "user456"},
+				},
+			},
+			expected: true,
+		},
+		{
 			name: "ignores skull with other text",
 			message: &discordgo.MessageCreate{
 				Message: &discordgo.Message{
@@ -608,6 +630,28 @@ func TestBot_ShouldDeleteMessage(t *testing.T) {
 					ChannelID: "chan123",
 					Content:   "💀",
 					Author:    nil,
+				},
+			},
+			expected: false,
+		},
+		{
+			name: "ignores empty message",
+			message: &discordgo.MessageCreate{
+				Message: &discordgo.Message{
+					ChannelID: "chan123",
+					Content:   "",
+					Author:    &discordgo.User{ID: "user456"},
+				},
+			},
+			expected: false,
+		},
+		{
+			name: "ignores whitespace-only message",
+			message: &discordgo.MessageCreate{
+				Message: &discordgo.Message{
+					ChannelID: "chan123",
+					Content:   "   ",
+					Author:    &discordgo.User{ID: "user456"},
 				},
 			},
 			expected: false,
